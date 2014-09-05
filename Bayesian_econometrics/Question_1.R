@@ -11,7 +11,7 @@ rnorm.trunc <- function(mean, variance, truncation.point, draws){
 }
 
 
-sim <- data.frame(Draws = rnorm.trunc(0.5, 2, 0, 1000))
+sim <- data.frame(Draws = rnorm.trunc(0.5, 2, 0, 10000))
 
 # Part b, plot the distribution
 summary(sim)
@@ -35,3 +35,22 @@ qs2 <- quantile(sim$Draws, probs = c(0, 0.9))
 qs2[2] - qs2[1]
 
 # I know this will be a shorter interval as there is more mass around the mean of the untruncated normal distribution (0.5)
+
+
+# Sanity check ====
+
+sim2 <- rnorm(20000, 0.5, sqrt(2))
+sim3 <- data.frame(draws = sim2[sim2>=0])
+
+ggplot(sim3, aes(x = draws)) + geom_histogram(alpha = 0.7, fill = "orange")
+
+mean(sim3$draws<1)
+
+head(sim3, 50)
+
+qs3 <- quantile(sim3$draws, probs = c(0.05, 0.95))
+qs3[2] - qs3[1]
+qs4 <- quantile(sim3$draws, probs = c(0.0, 0.9))
+qs4[2] - qs4[1]
+
+# Sanity check complete - it passes
