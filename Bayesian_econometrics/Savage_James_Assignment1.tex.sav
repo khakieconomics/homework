@@ -1,0 +1,26 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{dcolumn}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+
+%opening
+\title{Bayesian Econometrics - Assignment 1}
+\author{James Savage}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section*{Note}
+All programs used in this assignment are available on my github repository. Where possible, I have double-checked my answers in R, and these programs are up there too. 
+
+\section*{Question 1}
+
+
+
+
+
+\end{document}

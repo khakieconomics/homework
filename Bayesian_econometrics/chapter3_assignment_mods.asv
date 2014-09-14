@@ -25,29 +25,43 @@ capv0inv=inv(capv0);
 %%
 %Call script which carries actually does posterior analysis
 ch3post;
+
+% Plot the predictive distribution of ystar
+'ystarm' 
+ystarm
+plot_out = t_den_q2(10000, v1, ystarm, ystarsd^2);
+
+hold on
+ksdensity(plot_out/1000);
+xt = get(gca,'XTick');
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+title({'Kernel density estimate of predictive distribution';'of price of new house, thousands of dollars'})
+hold off
+
+
 %%
 %save the log of marginal likelihood for later use
 lmargun=lmarglik;
 
 %Print out whatever you want
-'Hyperparameters for informative natural conjugate prior'
-b0
-capv0
-v0
-s02
+% 'Hyperparameters for informative natural conjugate prior'
+% b0
+% capv0
+% v0
+% s02
 
 'Posterior results based on Informative Prior'
 b1
-bsd
-probpos
-bhpdi95
-bhpdi99
-hmean
-hsd
-lmarglik
-ystarm
-ystarsd
-ystarcapv
+% bsd
+% probpos
+% bhpdi95
+% bhpdi99
+% hmean
+% hsd
+% lmarglik
+% ystarm
+% ystarsd
+% ystarcapv
 
 
 %%
@@ -67,15 +81,20 @@ lmargun2=lmarglik;
 %Print out whatever you want
 'Posterior results based on zero beta Prior'
 b1
-bsd
-probpos
-bhpdi95
-bhpdi99
-hmean
-hsd
-ystarm
-ystarsd
-ystarcapv
+
+'Likelihood ratio'
+lmargun/lmargun2
+% bsd
+% probpos
+% bhpdi95
+% bhpdi99
+% hmean
+% hsd
+% ystarm
+% ystarsd
+% ystarcapv
+
+break
 %%
 %posterior odds ratio
 %evaluate log of marginal likelihood for restricted models with beta(j)=0

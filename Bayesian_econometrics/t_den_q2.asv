@@ -1,0 +1,11 @@
+% t.sampler <- function(draws, nu, mu, sigma2){
+% 	lambda <- rinvgamma(draws, shape = nu/2, scale = nu/2)
+% 	out <- rnorm(draws, mu, sqrt(lambda*sigma2))
+% 	out
+% }
+
+function x = t_den(draws, nu, mu, sigma2)
+
+lambda = gaminv(nu/2, nu/2, draws, 1);
+
+x = mu + lambda.*randn(draws, 1);

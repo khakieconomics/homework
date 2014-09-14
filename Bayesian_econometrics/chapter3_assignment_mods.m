@@ -25,6 +25,20 @@ capv0inv=inv(capv0);
 %%
 %Call script which carries actually does posterior analysis
 ch3post;
+
+% Plot the predictive distribution of ystar
+'ystarm' 
+ystarm
+plot_out = t_den_q2(10000, v1, ystarm, ystarsd^2);
+
+hold on
+ksdensity(plot_out/1000);
+xt = get(gca,'XTick');
+set(gca,'XTickLabel', sprintf('%.0f|',xt))
+title({'Kernel density estimate of predictive distribution';'of price of new house, thousands of dollars'})
+hold off
+
+
 %%
 %save the log of marginal likelihood for later use
 lmargun=lmarglik;
@@ -58,6 +72,9 @@ b0=0*ones(k,1);
 
 %Call script which carries actually does posterior analysis
 ch3post;
+
+'High posterior density intervals'
+bhpdi90
 
 %%
 %save the log of marginal likelihood for later use

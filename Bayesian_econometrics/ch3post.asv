@@ -66,13 +66,11 @@ hsd=sqrt(hvar);
 
 
 % hpdi calculation for the standard error
-
-hx = gaminv(0.01:0.01:0.99, hmean, v1);
-hy = gampdf(hx, hmean, v1);
-plot(sqrt(1/hx), hy, '-')
-xt = get(gca,'XTick');
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-
+%%
+x = 1./gamrnd(hmean, 1./v1, [1000,1]);
+out = quantile(x, 0.05);
+out
+%%
 s2hpdi = [0 hupper];
 sqrt(s2hpdi)
 

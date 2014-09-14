@@ -5,14 +5,17 @@ draws = rnormtrunc(1000, 0.5, 2, 0);
 hist(draws)
 
 % Part c
-% What is the probability the parameter lies inside the interval (0,1)
+% 
+'What is the probability the parameter lies inside the interval (0,1)'
 
 mean(draws>0 & draws<1)
 
-% Compute the 0.05 and 0.95 percentiles of the distribution
+% 
+'Compute the 0.05 and 0.95 percentiles of the distribution'
 qs = quantile(draws, [0.05, 0.95])
 
-% What is the length of the interval?
+% 
+'What is the length of the interval?'
 qs(2) - qs(1)
 
 % Can I find a shorter 90% interval? 
