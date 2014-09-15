@@ -64,16 +64,16 @@ hmean = 1/(s12);
 hvar=2/(v1s12);
 hsd=sqrt(hvar);
 
+%% 
+x = gaminv(0.01:0.01:0.99, v1/2, 2*hmean/v1);
+y = gampdf(x, v1/2, 2*hmean/v1);
+plot(sqrt(1./x), y, '-')
+'Point estimate standard error'
+sqrt(1/hmean)
+'HPDI interval for the standard error'
+sqrt(1./gaminv([0.05 0.95], v1/2, 2*hmean/v1))
 
-% hpdi calculation for the standard error
 %%
-x = 1./gamrnd(hmean, 1./v1, [1000,1]);
-out = quantile(x, 0.05);
-out
-%%
-s2hpdi = [0 hupper];
-sqrt(s2hpdi)
-
 %predictive inference
 if k == 5
 xstar = [1 5000 2 2 1];

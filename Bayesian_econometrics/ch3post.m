@@ -65,17 +65,7 @@ hvar=2/(v1s12);
 hsd=sqrt(hvar);
 
 
-% hpdi calculation for the standard error
-
-hx = gaminv(0.01:0.01:0.99, hmean, v1);
-hy = gampdf(hx, hmean, v1);
-plot(sqrt(1/hx), hy, '-')
-xt = get(gca,'XTick');
-set(gca,'XTickLabel', sprintf('%.0f|',xt))
-
-s2hpdi = [0 hupper];
-sqrt(s2hpdi)
-
+%%
 %predictive inference
 if k == 5
 xstar = [1 5000 2 2 1];

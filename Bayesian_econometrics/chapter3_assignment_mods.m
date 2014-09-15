@@ -31,6 +31,14 @@ ch3post;
 ystarm
 plot_out = t_den_q2(10000, v1, ystarm, ystarsd^2);
 
+'lower 90%'
+quantile(plot_out, 0.05)
+
+'upper 90%'
+quantile(plot_out, 0.95)
+
+'mean'
+mean(plot_out)
 hold on
 ksdensity(plot_out/1000);
 xt = get(gca,'XTick');
@@ -40,8 +48,7 @@ hold off
 
 
 %%
-%save the log of marginal likelihood for later use
-lmargun=lmarglik;
+
 
 %Print out whatever you want
 % 'Hyperparameters for informative natural conjugate prior'
@@ -76,17 +83,20 @@ ch3post;
 'High posterior density intervals'
 bhpdi90
 
+'Point estimate standard error'
+sqrt(1/hmean)
+'HPDI interval for the standard error'
+sqrt(1./gaminv([0.05 0.95], v1/2, 2*hmean/v1))
+
 %%
 %save the log of marginal likelihood for later use
-lmargun2=lmarglik;
+lmarglik2=lmarglik;
 
 
 %Print out whatever you want
 'Posterior results based on zero beta Prior'
 b1
 
-'Likelihood ratio'
-lmargun/lmargun2
 % bsd
 % probpos
 % bhpdi95
@@ -97,128 +107,41 @@ lmargun/lmargun2
 % ystarsd
 % ystarcapv
 
-break
+
 %%
-%posterior odds ratio
-%evaluate log of marginal likelihood for restricted models with beta(j)=0
-%this involves posterior inference for each of 5 restricted models
-%there are better ways of programming this, but I simply do posterior
-%analysis here for one model at a time
-postodds=zeros(k,1);
-x=hprice(:,2:5);
-k=4;
+% This section evaluates the model that takes only 
+
+
+k=3;
+x=hprice(:,3:4);
+x=[ones(n,1) x];
 
 %Hyperparameters for natural conjugate prior
 v0=5;
 b0=0*ones(k,1);
-b0(1,1)=10;
-b0(2,1)=5000;
-b0(3,1)=10000;
-b0(4,1)=10000;
+
 s02=1/4.0e-8;
 capv0=2.4*eye(k);
-capv0(1,1)=6e-7;
+%capv0(2,2)=6e-7; # Land size is out
 capv0(2,2)=.15;
 capv0(3,3)=.6;
-capv0(4,4)=.6;
 capv0inv=inv(capv0);
 
 %Call script which carries actually does posterior analysis
 ch3post;
 
-postodds(1,1)=exp(lmarglik-lmargun);
-
-x=hprice(:,3:5);
-x=[ones(n,1) x];
-k=4;
-
-%Hyperparameters for natural conjugate prior
-v0=5;
-b0=0*ones(k,1);
-b0(2,1)=5000;
-b0(3,1)=10000;
-b0(4,1)=10000;
-s02=1/4.0e-8;
-capv0=2.4*eye(k);
-capv0(2,2)=.15;
-capv0(3,3)=.6;
-capv0(4,4)=.6;
-capv0inv=inv(capv0);
-
-%Call script which carries actually does posterior analysis
-ch3post;
-
-postodds(2,1)=exp(lmarglik-lmargun);
-
-x1=hprice(:,2);
-x2=hprice(:,4:5);
-x=[ones(n,1) x1 x2];
-k=4;
-
-%Hyperparameters for natural conjugate prior
-v0=5;
-b0=0*ones(k,1);
-b0(2,1)=10;
-b0(3,1)=10000;
-b0(4,1)=10000;
-s02=1/4.0e-8;
-capv0=2.4*eye(k);
-capv0(2,2)=6e-7;
-capv0(3,3)=.6;
-capv0(4,4)=.6;
-capv0inv=inv(capv0);
-
-%Call script which carries actually does posterior analysis
-ch3post;
-
-postodds(3,1)=exp(lmarglik-lmargun);
-
-x1=hprice(:,2:3);
-x2=hprice(:,5);
-x=[ones(n,1) x1 x2];
-k=4;
-
-%Hyperparameters for natural conjugate prior
-v0=5;
-b0=0*ones(k,1);
-b0(2,1)=10;
-b0(3,1)=5000;
-b0(4,1)=10000;
-s02=1/4.0e-8;
-capv0=2.4*eye(k);
-capv0(2,2)=6e-7;
-capv0(3,3)=.15;
-capv0(4,4)=.6;
-capv0inv=inv(capv0);
-
-%Call script which carries actually does posterior analysis
-ch3post;
-
-postodds(4,1)=exp(lmarglik-lmargun);
-
-x=hprice(:,2:4);
-x=[ones(n,1) x];
-k=4;
-
-%Hyperparameters for natural conjugate prior
-v0=5;
-b0=0*ones(k,1);
-b0(2,1)=10;
-b0(3,1)=5000;
-b0(4,1)=10000;
-s02=1/4.0e-8;
-capv0=2.4*eye(k);
-capv0(2,2)=6e-7;
-capv0(3,3)=.15;
-capv0(4,4)=.6;
-capv0inv=inv(capv0);
-
-%Call script which carries actually does posterior analysis
-ch3post;
-
-postodds(5,1)=exp(lmarglik-lmargun);
-
-postodds
+'b1'
+b1
+postodds=exp(lmarglik-lmarglik2)
 
 %posterior model probabilities for each restricted model
 modelprob = postodds./(1+postodds)
+
+
+'High posterior density intervals'
+bhpdi90
+
+'Point estimate standard error'
+sqrt(1/hmean)
+'HPDI interval for the standard error'
+sqrt(1./gaminv([0.05 0.95], v1/2, 2*hmean/v1))
